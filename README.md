@@ -934,25 +934,17 @@ npm run dev
 * **Feedback Alerts**: Sonner toasts
 
 ### AI Approach
-The application supports a dual-mode AI architecture depending on the configured API key:
+The application implements a secure server-side try-on workflow to perform real face-preserving hairstyle swaps:
 
-* **TryItOn Mode (TryItOn API Key configured)**:
-  1. The customer uploads a front-facing portrait photo through the frontend.
-  2. The image is converted into a base64 Data URL and submitted securely via the server-side function `submitTryOnJob`.
-  3. The server function validates inputs, maps frontend hairstyle names to API models (e.g. *Signature Waves* to *LongWavy*), and forwards the payload to the **TryItOn Hairstyle API** endpoint (`POST https://tryiton.now/api/v1/tryon/hairstyle`).
-  4. TryItOn returns a `jobId`.
-  5. The frontend begins polling our status function `getTryOnJobStatus` (`GET https://tryiton.now/api/v1/status/{jobId}`) every 3 seconds.
-  6. Once the status becomes `completed`, the final generated `resultUrl` is returned to the frontend and rendered in the Before/After comparison slider.
-
-* **Gemini Analysis Mode (Gemini API Key configured)**:
-  1. The user photo, selected look, color, and length details are passed to the Gemini API (`gemini-1.5-flash` model).
-  2. Gemini performs a real multimodal AI analysis of the uploaded portrait.
-  3. It writes a personalized, warm, and editorial stylist review explaining why the look suits their face structure.
-  4. The result screen displays the style preview on the model clearly marked as **Sample Preview**, alongside the custom dynamic AI stylist recommendations.
+1. The customer uploads a front-facing portrait photo through the frontend.
+2. The image is converted into a base64 Data URL and submitted securely via the API client `generateTryOn` to our backend endpoint `POST /api/try-on`.
+3. The server endpoint validates inputs, maps frontend hairstyle names to API models (e.g. *Signature Waves* to *LongWavy*), validates sizes (max 10MB) and formats, and forwards the payload to the **TryItOn Hairstyle API** endpoint (`POST https://tryiton.now/api/v1/tryon/hairstyle`).
+4. TryItOn returns a `jobId`.
+5. The backend endpoint securely executes the status polling loop (`GET https://tryiton.now/api/v1/status/{jobId}`) every 3 seconds until completed.
+6. Once the status becomes `completed`, the final generated image URL is returned to the frontend and rendered in the Before/After comparison slider.
 
 ### Environment Variables
-* `TRYITON_API_KEY` / `HAIR_AI_API_KEY`: Secret API key for authorizing calls to the TryItOn platform.
-* `GEMINI_API_KEY`: Secret API key for authorizing calls to Google AI Studio's Gemini models.
+* `TRYITON_API_KEY`: Secret API key for authorizing calls to the TryItOn platform. Add this to your local `.env` file to start using the real AI generations!
 
 ### Known Limitations
 * **Credit Constraints**: AI try-on is credit-dependent on the external accounts.
