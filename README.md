@@ -883,16 +883,6 @@ Start by implementing the homepage, then the /try-on studio, then the result exp
 
 Make every screen polished, responsive and production-quality.
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/0049228d-860c-411f-9bc6-ab7b7e1db394).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
@@ -928,7 +918,7 @@ npm run dev
 ### Technology
 * **Core Framework**: React 19, TypeScript
 * **Routing**: TanStack Router (file-based API)
-* **Server/Backend**: TanStack Start (Nitro H3 handler) for secure server functions (`submitTryOnJob`, `getTryOnJobStatus`)
+* **Server/Backend**: TanStack Start (Nitro H3 handler) for the secure API route (`POST /api/try-on`)
 * **Styling**: Tailwind CSS v4.x
 * **Icons**: Lucide React
 * **Feedback Alerts**: Sonner toasts
