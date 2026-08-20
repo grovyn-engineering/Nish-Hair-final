@@ -21,7 +21,7 @@ import { ConsultationModal } from "@/components/site/ConsultationModal";
 
 import { looks, type HairColorName, type HairLength } from "@/data/looks";
 import { getProductForLook } from "@/data/products";
-import { generateTryOn } from "@/lib/tryOnService";
+import { generateTryOn, checkTryOnStatus } from "@/lib/tryOnService";
 
 const searchSchema = z.object({
   look: z.string().optional(),
@@ -44,12 +44,13 @@ function TryOnStudio() {
 
   // Initialize selectedLookId from search params or default to first look
   const [selectedLookId, setSelectedLookId] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<HairColorName>("Dark Brown");
+  const [selectedColor, setSelectedColor] = useState<HairColorName>("Brunette");
   const [selectedLength, setSelectedLength] = useState<HairLength>("22\"");
 
   const [generationStatus, setGenerationStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isSample, setIsSample] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [processingStage, setProcessingStage] = useState(0);
 
@@ -98,6 +99,22 @@ function TryOnStudio() {
     toast.error(message);
   };
 
+  const simulateDemoMode = async () => {
+    setGenerationStatus("loading");
+    setProcessingStage(0);
+    setErrorMsg(null);
+
+    // Simulate multi-stage premium loaders (Stage 0 to 3)
+    for (let stage = 0; stage <= 3; stage++) {
+      setProcessingStage(stage);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
+
+    setGeneratedImage(null);
+    setIsSample(true); // Demo mode uses look model image
+    setGenerationStatus("success");
+  };
+
   const handleTryThisLook = async () => {
     // Complete validation checks
     if (!uploadedImage) {
@@ -127,37 +144,72 @@ function TryOnStudio() {
     setSavedLook(false);
     setRequestedConsultation(false);
 
-    // Increment stage loader incrementally while the API is processing
-    let currentStage = 0;
-    const stageTimer = setInterval(() => {
-      if (currentStage < 3) {
-        currentStage++;
-        setProcessingStage(currentStage);
-      }
-    }, 4000);
+    if (isDemoMode) {
+      await simulateDemoMode();
+      return;
+    }
 
     try {
-      const res = await generateTryOn({
+      // 1. Submit the job to Supabase Edge Function
+      const submitRes = await generateTryOn({
         image: uploadedImage,
         hairstyle: selectedLook.name,
         color: selectedColor,
         length: selectedLength,
       });
 
-      clearInterval(stageTimer);
-
-      if (res.success && res.resultImageUrl) {
-        setProcessingStage(3); // Set to final stage
-        await new Promise((resolve) => setTimeout(resolve, 800)); // Brief pause for transition UX
-        setGeneratedImage(res.resultImageUrl);
-        setIsSample(false); // Real generated TryItOn result
-        setGenerationStatus("success");
-      } else {
+      if (!submitRes.success || !submitRes.jobId) {
         setGenerationStatus("error");
-        setErrorMsg(res.error || "We couldn't create your preview right now. Please try again.");
+        setErrorMsg(submitRes.error || "We couldn't create your preview right now. Please try again.");
+        return;
+      }
+
+      const jobId = submitRes.jobId;
+      setProcessingStage(1); // Stage 1: Understanding your hair profile
+
+      // 2. Poll for status using the try-on-status Edge Function
+      let attempts = 0;
+      const maxAttempts = 40; // 40 attempts * 3s = 120s timeout
+      let completed = false;
+
+      while (attempts < maxAttempts && !completed) {
+        attempts++;
+        
+        // Wait 3 seconds
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        
+        // Visual loader progression
+        if (attempts === 2) {
+          setProcessingStage(2); // Stage 2: Creating your personalized style
+        }
+
+        const pollRes = await checkTryOnStatus(jobId);
+
+        if (!pollRes.success || pollRes.status === "failed") {
+          completed = true;
+          setGenerationStatus("error");
+          setErrorMsg(pollRes.error || "We couldn't create your preview right now. Please try again.");
+          return;
+        }
+
+        if (pollRes.status === "completed") {
+          completed = true;
+          setProcessingStage(3); // Stage 3: Preparing your preview
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Brief pause for UX
+
+          setGeneratedImage(pollRes.resultImageUrl || null);
+          setIsSample(!!pollRes.isSample);
+          setGenerationStatus("success");
+          return;
+        }
+      }
+
+      // Timeout check
+      if (!completed) {
+        setGenerationStatus("error");
+        setErrorMsg("Your preview is taking longer than expected. Please try again.");
       }
     } catch (err) {
-      clearInterval(stageTimer);
       console.error("[try-on] handleTryThisLook exception:", err);
       setGenerationStatus("error");
       setErrorMsg("We couldn't create your preview right now. Please try again.");
@@ -165,28 +217,28 @@ function TryOnStudio() {
   };
 
   const handleApplyStylistPick = () => {
-    let recommendedColor: HairColorName = "Dark Brown";
+    let recommendedColor: HairColorName = "Brunette";
     let recommendedLength: HairLength = "22\"";
 
     switch (selectedLook.id) {
-      case "signature-waves":
-        recommendedColor = "Dark Brown";
+      case "beach-waves":
+        recommendedColor = "Brunette";
         recommendedLength = "22\"";
         break;
       case "long-straight":
         recommendedColor = "Black";
         recommendedLength = "22\"";
         break;
-      case "soft-curls":
-        recommendedColor = "Honey Blonde";
+      case "curly":
+        recommendedColor = "Blonde";
         recommendedLength = "22\"";
         break;
-      case "classic-bob":
-        recommendedColor = "Dark Brown";
+      case "bob":
+        recommendedColor = "Brunette";
         recommendedLength = "18\"";
         break;
-      case "layered-volume":
-        recommendedColor = "Chestnut";
+      case "layered":
+        recommendedColor = "Brunette";
         recommendedLength = "22\"";
         break;
     }
@@ -325,6 +377,8 @@ function TryOnStudio() {
                   onSubmit={handleTryThisLook}
                   onBack={() => setStep(1)}
                   isLoading={generationStatus === "loading"}
+                  isDemoMode={isDemoMode}
+                  onDemoModeChange={setIsDemoMode}
                 />
               </div>
             </div>
@@ -346,6 +400,25 @@ function TryOnStudio() {
                     onRetry={handleTryThisLook}
                     onChooseAnother={handleResetToLookChoice}
                   />
+                  <div className="mt-6 text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsDemoMode(true);
+                        // Trigger the demo run immediately
+                        setTimeout(() => {
+                          setStep(3);
+                          setGenerationStatus("loading");
+                          setProcessingStage(0);
+                          setErrorMsg(null);
+                          simulateDemoMode();
+                        }, 100);
+                      }}
+                      className="text-sm font-medium text-champagne hover:text-champagne/80 hover:underline transition-colors"
+                    >
+                      Want to skip API keys? Try with Demo Mode
+                    </button>
+                  </div>
                 </div>
               )}
 
