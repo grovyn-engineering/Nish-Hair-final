@@ -1,13 +1,13 @@
-# LustraHair Try-On Studio
+# NishHair Try-On Studio
 
-An AI-powered virtual hair try-on studio built for **LustraHair**—a premium, elegant beauty-commerce brand. This application allows customers to upload their own portrait photo, select a desired hairstyle, customize its length and color, and instantly preview how it looks on them using the official TryItOn Hairstyle API.
+An AI-powered virtual hair try-on studio built for **NishHair**—a premium, elegant beauty-commerce brand. This application allows customers to upload their own portrait photo, select a desired hairstyle, customize its length and color, and instantly preview how it looks on them using the official TryItOn Hairstyle API.
 
 ---
 
 ## 🌟 Key Features
 
 - **Draggable Before/After Slider**: Interactive visual comparison of the customer's original photo against the AI-generated styled hairstyle.
-- **Dynamic Product Mapping**: Instantly recommends matching physical hair extensions/wigs from the LustraHair catalog based on the tried-on style.
+- **Dynamic Product Mapping**: Instantly recommends matching physical hair extensions/wigs from the NishHair catalog based on the tried-on style.
 - **Color & Length Customizations**: Personalize looks with standard lengths (18", 22", 26") and custom color swatches (Black, Dark Brown, Chestnut, Honey Blonde).
 - **Secure Server-Side API**: Direct API requests containing sensitive credentials run strictly server-side, protecting tokens from browser access.
 - **Premium Loading States**: Real-time multi-stage loader indicating exactly what visual transformations are being applied (*Analyzing*, *Profile Syncing*, *Personalizing*, *Preparing Preview*).
@@ -30,7 +30,7 @@ An AI-powered virtual hair try-on studio built for **LustraHair**—a premium, e
 ## ⚙️ Project Architecture
 
 ```text
-               [ LustraHair Frontend ]
+               [ NishHair Frontend ]
                  │                  │
                  │ (POST /try-on)   │ (POST /try-on-status)
                  ▼                  ▼
@@ -47,7 +47,7 @@ An AI-powered virtual hair try-on studio built for **LustraHair**—a premium, e
 
 ## 🚀 Getting Started
 
-Follow these steps to run the LustraHair Try-On Studio locally:
+Follow these steps to run the NishHair Try-On Studio locally:
 
 ### 1. Prerequisites
 Ensure you have Node.js (v18.x or later) installed on your system.
@@ -76,7 +76,7 @@ Start the development server:
 ```bash
 npm run dev
 ```
-Open your browser and navigate to `http://localhost:3000` to preview the LustraHair Studio.
+Open your browser and navigate to `http://localhost:3000` to preview the NishHair Studio.
 
 ---
 
@@ -87,7 +87,7 @@ Open your browser and navigate to `http://localhost:3000` to preview the LustraH
 - `src/components/site/` - Reusable UI components (Sliders, panels, header, footer, loaders, modals, error panels).
 - `src/config/` - Mappings, hairstyle allowed values lists, and color prompts.
 - `src/lib/` - Frontend service clients (`tryOnService.ts`), error reporters, and utils.
-- `src/data/` - Static catalog details for LustraHair products and styles.
+- `src/data/` - Static catalog details for NishHair products and styles.
 - `public/` - Static assets and icons.
 
 ---

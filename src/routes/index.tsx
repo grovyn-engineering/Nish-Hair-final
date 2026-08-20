@@ -7,9 +7,9 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { LookGrid } from "@/components/site/LookGrid";
 import { looks } from "@/data/looks";
 
-const title = "LustraHair — See Your Next Look Before You Buy";
+const title = "NishHair — See Your Next Look Before You Buy";
 const description =
-  "Upload a photo and preview personalized hairstyles, lengths and colors with LustraHair's AI-powered virtual try-on.";
+  "Upload a photo and preview personalized hairstyles, lengths and colors with NishHair's AI-powered virtual try-on.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,7 +55,7 @@ function Index() {
               Confidence before purchase — not guesswork
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Our AI preview exists for one reason: so you know how a LustraHair piece will look on
+              Our AI preview exists for one reason: so you know how a NishHair piece will look on
               you before it arrives at your door.
             </p>
             <button

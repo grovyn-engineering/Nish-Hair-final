@@ -16,7 +16,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md">
       <nav aria-label="Main" className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
         <Link to="/" className="font-serif text-2xl tracking-tight text-espresso">
-          Lustra<span className="italic text-champagne">Hair</span>
+          Nish<span className="italic text-champagne">Hair</span>
         </Link>
 
         <ul className="hidden items-center gap-9 md:flex">

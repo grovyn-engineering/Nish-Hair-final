@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "LustraHair Try-On Studio — See Your Next Look Before You Buy" },
+      { title: "NishHair Try-On Studio — See Your Next Look Before You Buy" },
       { name: "description", content: "Upload a photo, explore personalized hairstyles, lengths and colors, and preview your next look before making a purchase." },
-      { name: "author", content: "LustraHair" },
-      { property: "og:title", content: "LustraHair Try-On Studio" },
+      { name: "author", content: "NishHair" },
+      { property: "og:title", content: "NishHair Try-On Studio" },
       { property: "og:description", content: "Upload a photo, explore personalized hairstyles, lengths and colors, and preview your next look before making a purchase." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@LustraHair" },
+      { name: "twitter:site", content: "@NishHair" },
     ],
     links: [
       {

@@ -110,7 +110,7 @@ export function CustomizationPanel({
             🔍 What am I selecting?
           </h4>
           <p className="mt-1 leading-relaxed">
-            You are selecting a specific physical hair extension or wig look from the LustraHair catalog, customized by length ({length}) and color ({color}).
+            You are selecting a specific physical hair extension or wig look from the NishHair catalog, customized by length ({length}) and color ({color}).
           </p>
         </div>
         <div className="border-t border-border/50 pt-2.5">

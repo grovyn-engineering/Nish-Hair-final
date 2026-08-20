@@ -15,7 +15,7 @@ export interface Product {
 export const products: Product[] = looks.map((look) => ({
   id: look.productId,
   lookId: look.id,
-  title: `LustraHair ${look.name}`,
+  title: `NishHair ${look.name}`,
   collection: "Premium Human Hair Collection",
   description: `${look.description} Ethically sourced, hand-finished and cuticle-aligned for a natural blend with your own hair.`,
   price: look.startingPrice,

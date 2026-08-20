@@ -254,7 +254,7 @@ function TryOnStudio() {
 
   const handleAddToCart = () => {
     setAddedToCart(true);
-    toast.success("Added to your LustraHair bag", {
+    toast.success("Added to your NishHair bag", {
       description: `${selectedLook.name} (${selectedLength} · ${selectedColor}) has been added to your shopping bag.`,
     });
   };
@@ -262,7 +262,7 @@ function TryOnStudio() {
   const handleSaveLook = () => {
     setSavedLook(true);
     try {
-      const savedList = JSON.parse(localStorage.getItem("lustrahair_saved_looks") || "[]");
+      const savedList = JSON.parse(localStorage.getItem("nishhair_saved_looks") || "[]");
       const newLook = {
         hairstyle: selectedLook.name,
         color: selectedColor,
@@ -271,7 +271,7 @@ function TryOnStudio() {
         createdAt: new Date().toISOString(),
       };
       savedList.push(newLook);
-      localStorage.setItem("lustrahair_saved_looks", JSON.stringify(savedList));
+      localStorage.setItem("nishhair_saved_looks", JSON.stringify(savedList));
       toast.success("Your look has been saved.");
     } catch (err) {
       console.error("[try-on] Failed to save look:", err);

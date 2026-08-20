@@ -4,7 +4,7 @@ const steps = [
   {
     n: "03",
     title: "Discover",
-    copy: "See your personalized AI preview and find the matching LustraHair product.",
+    copy: "See your personalized AI preview and find the matching NishHair product.",
   },
 ];
 
