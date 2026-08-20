@@ -7,7 +7,7 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { LookGrid } from "@/components/site/LookGrid";
 import { looks } from "@/data/looks";
 
-const title = "NishHair — See Your Next Look Before You Buy";
+const title = "NishHair — Confidence before purchase — not guesswork";
 const description =
   "Upload a photo and preview personalized hairstyles, lengths and colors with NishHair's AI-powered virtual try-on.";
 

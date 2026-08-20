@@ -19,7 +19,7 @@ export function Navbar() {
           Nish<span className="italic text-champagne">Hair</span>
         </Link>
 
-        <ul className="hidden items-center gap-9 md:flex">
+        {/* <ul className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <li key={l.to}>
               <Link
@@ -31,7 +31,7 @@ export function Navbar() {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
 
         <div className="flex items-center gap-2">
           <Link to="/try-on" className="btn-base btn-primary hidden md:inline-flex">
