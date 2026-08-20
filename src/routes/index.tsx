@@ -7,7 +7,7 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { LookGrid } from "@/components/site/LookGrid";
 import { looks } from "@/data/looks";
 
-const title = "NishHair — Confidence before purchase — not guesswork";
+const title = "NishHair — Confidence before purchase,not guesswork";
 const description =
   "Upload a photo and preview personalized hairstyles, lengths and colors with NishHair's AI-powered virtual try-on.";
 
@@ -52,7 +52,7 @@ function Index() {
         <section className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="rounded-[1.75rem] bg-sand px-6 py-14 text-center sm:px-12 sm:py-20">
             <h2 className="mx-auto max-w-2xl font-serif text-3xl text-espresso sm:text-4xl">
-              Confidence before purchase — not guesswork
+              Confidence before purchase, not guesswork
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               Our AI preview exists for one reason: so you know how a NishHair piece will look on

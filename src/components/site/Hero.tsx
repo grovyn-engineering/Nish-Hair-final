@@ -1,14 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
-import heroImage from "@/assets/hero.jpg";
+import heroImage from "@/assets/hero.png";
+import heroVideo from "@/assets/hero2.mp4";
 
 export function Hero() {
   return (
     <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 pt-14 pb-8 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:pt-24">
       <div className="animate-rise">
         <p className="eyebrow inline-flex items-center gap-2">
-     
-          
+          <Sparkles className="size-3.5" aria-hidden="true" />
+          AI-Powered Virtual Try-On
         </p>
         <h1 className="mt-5 font-serif text-[2.75rem] leading-[1.05] tracking-tight text-espresso sm:text-6xl lg:text-7xl">
           See Your Next Look <em className="text-champagne">Before</em> You Buy
@@ -42,12 +43,14 @@ export function Hero() {
 
       <div className="relative">
         <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-champagne-soft/60" aria-hidden="true" />
-        <img
-          src={heroImage}
-          alt="Model with long, glossy dark brown waves styled by NishHair"
-          width={1024}
-          height={1280}
-          className="h-[420px] w-full rounded-[1.75rem] object-cover object-top shadow-[var(--shadow-lift)] sm:h-[560px] lg:h-[640px]"
+        <video
+          src={heroVideo}
+          poster={heroImage}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-[420px] w-full rounded-[1.75rem] object-cover object-center shadow-[var(--shadow-lift)] sm:h-[560px] lg:h-[640px]"
         />
       </div>
     </section>
