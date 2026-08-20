@@ -20,7 +20,7 @@ An AI-powered virtual hair try-on studio built for **LustraHair**—a premium, e
 
 - **Core Framework**: React 19, TypeScript
 - **Routing & SSR**: TanStack Start / TanStack Router
-- **Backend/API Routing**: Nitro (H3 handler)
+- **Backend/API Routing**: Supabase Edge Functions (Deno / TypeScript)
 - **Styling**: Tailwind CSS v4.x
 - **Icons**: Lucide React
 - **Notifications**: Sonner
@@ -31,21 +31,16 @@ An AI-powered virtual hair try-on studio built for **LustraHair**—a premium, e
 
 ```text
                [ LustraHair Frontend ]
-                          │
-                          ▼ (POST /api/try-on)
-             [ Secure Backend API Route ]
-                          │ (validate params, check image format/size)
-                          ▼ (POST /api/v1/tryon/hairstyle)
+                 │                  │
+                 │ (POST /try-on)   │ (POST /try-on-status)
+                 ▼                  ▼
+             [ Supabase Edge Functions /v1 ]
+                 │                  │
+                 │ (submit job)     │ (poll status)
+                 ▼                  ▼
              [ TryItOn Hairstyle API ]
-                          │ (returns jobId)
-                          ▼
-             [ Poll Status Endpoint ]
-                          │ (GET /api/v1/status/{jobId})
-                          ▼
-             [ Generated Preview URL ]
-                          │
-                          ▼ (normalizes result)
-               [ Before/After Slider ]
+                 │ (jobId)          │ (completed result)
+                 └──────────────────┴─────► [ Before/After Slider ]
 ```
 
 ---
@@ -65,12 +60,16 @@ cd AI-Powered-Virtual-Hair-Try-On-Experience
 npm install
 ```
 
-### 3. Configure Secrets
-Create a `.env` file in the root directory of the project and add your TryItOn developer API key:
-```env
-TRYITON_API_KEY=your_try_it_on_api_key_here
-```
-*(You can get your API key from the [TryItOn Developer Dashboard](https://tryiton.now/app/developer))*
+### 3. Configure Secrets & Environment
+1. **Frontend Environment**: Create a `.env` file in the root directory and set your Supabase Project URL:
+   ```env
+   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+   ```
+2. **Edge Functions Secret**: Set your TryItOn developer API key as a Supabase Edge Function secret:
+   ```bash
+   supabase secrets set TRYITON_API_KEY=your_try_it_on_api_key_here
+   ```
+   *(You can get your API key from the [TryItOn Developer Dashboard](https://tryiton.now/app/developer))*
 
 ### 4. Run Local Development Server
 Start the development server:
@@ -83,12 +82,13 @@ Open your browser and navigate to `http://localhost:3000` to preview the LustraH
 
 ## 📂 Directory Structure
 
-- `src/routes/` - TanStack Router page views (Homepage, Try-on studio page, and secure backend endpoint `/api/try-on.ts`).
+- `supabase/functions/` - Supabase Deno Edge Functions (`try-on/index.ts` and `try-on-status/index.ts`).
+- `src/routes/` - TanStack Router page views (Homepage, and Try-on studio page).
 - `src/components/site/` - Reusable UI components (Sliders, panels, header, footer, loaders, modals, error panels).
-- `src/config/` - Prompts configuration, hairstyle allowed values lists, and mappings.
-- `src/lib/` - Frontend service APIs, error reporters, and utilities.
+- `src/config/` - Mappings, hairstyle allowed values lists, and color prompts.
+- `src/lib/` - Frontend service clients (`tryOnService.ts`), error reporters, and utils.
 - `src/data/` - Static catalog details for LustraHair products and styles.
-- `public/` - Static assets, icons, and logo assets.
+- `public/` - Static assets and icons.
 
 ---
 

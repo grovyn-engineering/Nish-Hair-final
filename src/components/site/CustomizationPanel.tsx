@@ -10,10 +10,21 @@ interface Props {
   onSubmit: () => void;
   onBack: () => void;
   isLoading?: boolean;
+  isDemoMode: boolean;
+  onDemoModeChange: (val: boolean) => void;
 }
 
 export function CustomizationPanel({
-  look, color, length, onColorChange, onLengthChange, onSubmit, onBack, isLoading,
+  look,
+  color,
+  length,
+  onColorChange,
+  onLengthChange,
+  onSubmit,
+  onBack,
+  isLoading,
+  isDemoMode,
+  onDemoModeChange,
 }: Props) {
   return (
     <section className="rounded-2xl border border-border bg-card p-6 sm:p-8" aria-labelledby="customize">
@@ -76,6 +87,41 @@ export function CustomizationPanel({
       <p className="mt-8 rounded-xl bg-sand px-4 py-3 text-sm text-espresso">
         {look.name} · {length} · {color}
       </p>
+
+      {/* Demo Mode Toggle */}
+      <div className="mt-6 flex items-center gap-3 rounded-xl border border-champagne-soft bg-champagne-soft/10 p-3">
+        <input
+          type="checkbox"
+          id="demo-mode"
+          checked={isDemoMode}
+          onChange={(e) => onDemoModeChange(e.target.checked)}
+          className="size-4 rounded border-border text-espresso focus:ring-espresso cursor-pointer"
+          disabled={isLoading}
+        />
+        <label htmlFor="demo-mode" className="text-sm font-medium text-espresso cursor-pointer select-none">
+          Demo Mode (Instant simulation, no API key required)
+        </label>
+      </div>
+
+      {/* Explanatory Box: What am I selecting? What happens next? */}
+      <div className="mt-6 rounded-xl border border-border bg-sand/30 p-4 text-xs text-muted-foreground space-y-3">
+        <div>
+          <h4 className="font-semibold text-espresso text-sm flex items-center gap-1.5">
+            🔍 What am I selecting?
+          </h4>
+          <p className="mt-1 leading-relaxed">
+            You are selecting a specific physical hair extension or wig look from the LustraHair catalog, customized by length ({length}) and color ({color}).
+          </p>
+        </div>
+        <div className="border-t border-border/50 pt-2.5">
+          <h4 className="font-semibold text-espresso text-sm flex items-center gap-1.5">
+            ⚡ What will happen after I select it?
+          </h4>
+          <p className="mt-1 leading-relaxed">
+            Our AI model will analyze your uploaded face photo and overlay the selected hairstyle, letting you compare the before and after with a sliding preview tool.
+          </p>
+        </div>
+      </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <button

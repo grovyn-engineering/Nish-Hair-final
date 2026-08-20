@@ -6,9 +6,8 @@ import layeredVolume from "@/assets/look-layered-volume.jpg";
 
 export const HAIR_COLORS = [
   { id: "black", name: "Black", swatch: "#1b1614" },
-  { id: "dark-brown", name: "Dark Brown", swatch: "#3d2a20" },
-  { id: "chestnut", name: "Chestnut", swatch: "#7b4a2b" },
-  { id: "honey-blonde", name: "Honey Blonde", swatch: "#c9944f" },
+  { id: "brunette", name: "Brunette", swatch: "#3d2a20" },
+  { id: "blonde", name: "Blonde", swatch: "#c9944f" },
 ] as const;
 
 export type HairColorName = (typeof HAIR_COLORS)[number]["name"];
@@ -28,22 +27,22 @@ export interface Look {
   stylistNote: string;
 }
 
-const allColors: HairColorName[] = ["Black", "Dark Brown", "Chestnut", "Honey Blonde"];
+const allColors: HairColorName[] = ["Black", "Brunette", "Blonde"];
 const allLengths: HairLength[] = ["18\"", "22\"", "26\""];
 
 export const looks: Look[] = [
   {
-    id: "signature-waves",
-    name: "Signature Waves",
+    id: "beach-waves",
+    name: "Beach Waves",
     description: "Soft cascading waves with natural movement.",
     category: "Wavy",
     image: signatureWaves,
-    productId: "signature-waves-product",
+    productId: "beach-waves-product",
     startingPrice: 12999,
     availableColors: allColors,
     availableLengths: allLengths,
     stylistNote:
-      "Signature Waves in Dark Brown adds natural-looking length and soft volume while keeping the overall finish effortless.",
+      "Beach Waves in Brunette adds natural-looking length and soft volume while keeping the overall finish effortless.",
   },
   {
     id: "long-straight",
@@ -59,43 +58,43 @@ export const looks: Look[] = [
       "Long Straight in Black reads polished and editorial — ideal if you prefer a sharp, minimal silhouette.",
   },
   {
-    id: "soft-curls",
-    name: "Soft Curls",
+    id: "curly",
+    name: "Curly",
     description: "Rounded, bouncy curls with a warm, lived-in feel.",
     category: "Curly",
     image: softCurls,
-    productId: "soft-curls-product",
+    productId: "curly-product",
     startingPrice: 13999,
     availableColors: allColors,
     availableLengths: allLengths,
     stylistNote:
-      "Soft Curls in Honey Blonde brings light around the face and softens strong features beautifully.",
+      "Curly in Blonde brings light around the face and softens strong features beautifully.",
   },
   {
-    id: "classic-bob",
-    name: "Classic Bob",
+    id: "bob",
+    name: "Bob",
     description: "A precise, chin-grazing cut with a confident line.",
     category: "Short",
     image: classicBob,
-    productId: "classic-bob-product",
+    productId: "bob-product",
     startingPrice: 10999,
     availableColors: allColors,
     availableLengths: ["18\""],
     stylistNote:
-      "Classic Bob in Dark Brown is the quickest way to a modern, high-impact change with very little upkeep.",
+      "Bob in Brunette is the quickest way to a modern, high-impact change with very little upkeep.",
   },
   {
-    id: "layered-volume",
-    name: "Layered Volume",
+    id: "layered",
+    name: "Layered",
     description: "Face-framing layers built for lift and body.",
     category: "Layered",
     image: layeredVolume,
-    productId: "layered-volume-product",
+    productId: "layered-product",
     startingPrice: 12499,
     availableColors: allColors,
     availableLengths: allLengths,
     stylistNote:
-      "Layered Volume in Chestnut adds fullness through the mid-lengths without losing your natural shape.",
+      "Layered in Brunette adds fullness through the mid-lengths without losing your natural shape.",
   },
 ];
 
