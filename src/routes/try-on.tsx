@@ -346,6 +346,13 @@ function TryOnStudio() {
 
               {!uploadedImage ? (
                 <div className="space-y-4">
+                  {validationError && (
+                    <PhotoValidationError
+                      failures={validationError.failures}
+                      reasons={validationError.reasons}
+                      onRetry={() => setValidationError(null)}
+                    />
+                  )}
                   <UploadZone onAccepted={handleUploadAccepted} onError={handleUploadError} onValidationFailure={handleValidationFailure} enableBackendValidation={true} />
                   <p className="text-center text-xs text-muted-foreground tracking-wide">
                     🔒 Your photo is validated with Velura backend before use.
