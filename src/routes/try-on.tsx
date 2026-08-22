@@ -496,6 +496,18 @@ function TryOnStudio() {
                       <span>Hairstyle: {selectedLook.name}</span>
                       <span>Configuration: {selectedLength} · {selectedColor}</span>
                     </div>
+
+                    {/* Shop Now CTA */}
+                    <div className="mt-8 flex justify-center">
+                      <a
+                        href={selectedLook.shopUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full bg-espresso px-10 py-4 text-sm font-semibold tracking-wide text-white shadow-md transition-all duration-200 hover:bg-espresso/90 hover:shadow-lg hover:-translate-y-0.5"
+                      >
+                        🛍️ Shop This Look on Nish Hair
+                      </a>
+                    </div>
                   </div>
 
                   {/* Product Recommendation Card */}
@@ -509,8 +521,7 @@ function TryOnStudio() {
                         product={product}
                         color={selectedColor}
                         length={selectedLength}
-                        added={addedToCart}
-                        onAddToCart={handleAddToCart}
+                        shopUrl={selectedLook.shopUrl}
                         onSaveLook={handleSaveLook}
                         onConsultation={() => setIsConsultationOpen(true)}
                       />

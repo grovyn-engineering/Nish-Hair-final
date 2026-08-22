@@ -4,14 +4,13 @@ interface Props {
   product: Product;
   color: string;
   length: string;
-  added: boolean;
-  onAddToCart: () => void;
+  shopUrl: string;
   onSaveLook: () => void;
   onConsultation: () => void;
 }
 
 export function ProductCard({
-  product, color, length, added, onAddToCart, onSaveLook, onConsultation,
+  product, color, length, shopUrl, onSaveLook, onConsultation,
 }: Props) {
   return (
     <article className="grid gap-8 rounded-2xl border border-border bg-card p-6 sm:p-8 md:grid-cols-[minmax(0,320px)_1fr]">
@@ -45,15 +44,14 @@ export function ProductCard({
         </dl>
 
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <button
-            type="button"
-            onClick={onAddToCart}
-            disabled={added}
-            className="btn-base btn-primary"
-            aria-live="polite"
+          <a
+            href={shopUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-base btn-primary inline-flex items-center gap-2"
           >
-            {added ? "Added ✓" : "Add to Cart"}
-          </button>
+            🛍️ Shop on Nish Hair
+          </a>
           <button type="button" onClick={onSaveLook} className="btn-base btn-ghost">
             Save Look
           </button>

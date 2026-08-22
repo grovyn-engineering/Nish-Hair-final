@@ -19,6 +19,7 @@ export interface Look {
   category: string;
   image: string;
   productId: string;
+  shopUrl: string;
   startingPrice: number;
   availableColors: HairColorName[];
   availableLengths: HairLength[];
@@ -36,6 +37,7 @@ export const looks: Look[] = [
     category: "Bangs",
     image: curtainBangs,
     productId: "clip-in-hairline-curtain-bangs",
+    shopUrl: "https://www.nishhair.com/products/clip-in-hairline-with-curtain-bangs-human-hair-nish-hair",
     startingPrice: 3999,
     availableColors: ["Black", "Brunette"],
     availableLengths: ["12\"", "14\""],
@@ -49,6 +51,7 @@ export const looks: Look[] = [
     category: "Topper",
     image: scalpTopper,
     productId: "bangs-scalp-topper-paruls-ombre",
+    shopUrl: "https://www.nishhair.com/collections/clip-in-bangs/products/bangs-with-scalp-hair-topper-silk-base-paruls-ombre",
     startingPrice: 6299,
     availableColors: ["Brunette"],
     availableLengths: ["12\"", "14\"", "16\""],
@@ -62,6 +65,7 @@ export const looks: Look[] = [
     category: "Colour",
     image: electricBlue,
     productId: "electric-blue-hair-strand-strandout",
+    shopUrl: "https://www.nishhair.com/products/electric-blue-hair-strand-strandout-coloured-clip-in-hair-nish-hair?variant=49276336668962",
     startingPrice: 599,
     availableColors: ["Blonde"],
     availableLengths: ["12\"", "14\"", "16\""],
