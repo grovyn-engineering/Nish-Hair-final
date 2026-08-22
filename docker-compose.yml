@@ -28,7 +28,7 @@ services:
   photo-check-backend:
     build:
       context: ./backend/velura-photo-check
-      dockerfile: ./backend/velura-photo-check/Dockerfile
+      dockerfile: Dockerfile
     container_name: nishhair-photo-check
     expose:
       - "8000"
