@@ -24,6 +24,8 @@ services:
       start_period: 10s
     depends_on:
       - photo-check-backend
+    networks:
+      - nishhair-net
 
   photo-check-backend:
     build:
@@ -41,3 +43,12 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+    networks:
+      - nishhair-net
+
+networks:
+  nishhair-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
