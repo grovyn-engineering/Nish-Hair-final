@@ -14,6 +14,10 @@ services:
       - VITE_EXTERNAL_API_URL=${VITE_EXTERNAL_API_URL:-}
       - EXTERNAL_API_URL=${EXTERNAL_API_URL:-}
       - PHOTO_CHECK_BACKEND_URL=http://photo-check-backend:8000
+      - VMODEL_API_KEY=${VMODEL_API_KEY:-}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-}
     env_file:
       - .env
     healthcheck:
