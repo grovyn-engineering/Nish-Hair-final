@@ -1,20 +1,20 @@
 version: '3.8'
 
 services:
-  nish-hair-studio:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: nish-hair-studio
     restart: always
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       - PORT=3000
       - HOST=0.0.0.0
       - NODE_ENV=production
       - TRYITON_API_KEY=${TRYITON_API_KEY:-}
-      - VITE_PHOTO_CHECK_BACKEND_URL=${VITE_PHOTO_CHECK_BACKEND_URL:-http://photo-check-backend:8000}
+      - VITE_PHOTO_CHECK_BACKEND_URL=${VITE_PHOTO_CHECK_BACKEND_URL:-/api}
     env_file:
       - .env
     healthcheck:
@@ -25,16 +25,14 @@ services:
       start_period: 10s
     networks:
       - nishhair-network
-    depends_on:
-      - photo-check-backend
 
   photo-check-backend:
     build:
       context: ./backend/velura-photo-check
       dockerfile: Dockerfile
     container_name: nishhair-photo-check
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     environment:
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
     restart: unless-stopped
@@ -44,6 +42,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+    networks:
+      - nishhair-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nishhair-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+      - photo-check-backend
     networks:
       - nishhair-network
 

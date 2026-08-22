@@ -4,16 +4,21 @@ This document explains how to deploy the NishHair application to Dokploy.
 
 ## Architecture
 
-The application consists of two services running in the same Docker Compose stack:
+Both frontend and backend run under a single domain using nginx as a reverse proxy:
 
-1. **Frontend** - React/TypeScript application served via Nitro (Nuxt) on port 3000
-2. **Backend (Photo Check)** - FastAPI Python service for photo validation on port 8000
+- **Frontend** - React/TypeScript application served via Nitro (Nuxt) on port 3000
+- **Backend (Photo Check)** - FastAPI Python service for photo validation on port 8000
+- **Nginx** - Reverse proxy on port 80/443 routing requests to appropriate services
 
-Both services are connected via a Docker bridge network, allowing the frontend to communicate with the backend using the service name `photo-check-backend`.
+**Routing:**
+- `/` → Frontend (Nitro)
+- `/api/` → Backend API (proxied to `/`)
+- `/photo-check` → Backend photo validation endpoint
+- `/healthz`, `/readyz` → Backend health endpoints
 
 ## Quick Start with Dokploy
 
-### Deploy with Docker Compose (Recommended)
+### Deploy with Docker Compose
 
 1. **Push your code to a Git repository** (GitHub, GitLab, etc.)
 
@@ -31,30 +36,20 @@ Both services are connected via a Docker bridge network, allowing the frontend t
    | `TRYITON_API_KEY` | `your_api_key` | Your TryItOn API key (required for generation) |
    | `ALLOWED_ORIGINS` | `https://yourdomain.com` | Your frontend domain (use `*` for testing) |
 
-### Option 2: Deploy Services Separately
-
-#### Deploy the Photo Check Backend First
-
-1. Create a new deployment in Dokploy using the `./backend/velura-photo-check` directory
-2. Set environment variable:
-   - `ALLOWED_ORIGINS` = `*` (or your frontend domain)
-3. Note the deployed URL (e.g., `https://photo-check-xxx.dokploy.app`)
-
-#### Deploy the Main Application
-
-1. Create another deployment for the main application
-2. Set the environment variable:
-   - `VITE_PHOTO_CHECK_BACKEND_URL` = `https://photo-check-xxx.dokploy.app` (use the external URL)
-3. Deploy
+4. **Access your application:**
+   - Frontend: `https://yourdomain.com`
+   - Backend API: Available at `https://yourdomain.com/api/` (proxied by nginx)
+   - Photo-check endpoint: `https://yourdomain.com/photo-check`
 
 ## Docker Compose Configuration
 
-The `docker-compose.yml` file is already configured with:
+The `docker-compose.yml` file includes three services:
 
-- Builds the FastAPI backend from `./backend/velura-photo-check`
-- Exposes port 8000
-- Includes health checks
-- Uses a bridge network for service communication
+- **app** - Frontend Nitro server (port 3000)
+- **photo-check-backend** - FastAPI backend (port 8000)
+- **nginx** - Reverse proxy (ports 80/443)
+
+All services are connected on the `nishhair-network` for inter-service communication.
 
 ## Local Development with Docker
 
@@ -68,7 +63,9 @@ docker-compose up --build
 docker-compose down
 
 # View logs
+docker-compose logs -f app
 docker-compose logs -f photo-check-backend
+docker-compose logs -f nginx
 ```
 
 ## Environment Variables
@@ -77,8 +74,8 @@ docker-compose logs -f photo-check-backend
 
 ```bash
 # Velura Photo Check Backend URL
-# Use "http://photo-check-backend:8000" for Docker Compose networking
-# Use "https://your-external-url" for Dokploy deployments
+# For local development: http://localhost:8000
+# For Docker/Dokploy: /api (nginx reverse proxy)
 VITE_PHOTO_CHECK_BACKEND_URL=http://localhost:8000
 
 # Optional: External backend URL (for direct frontend-to-backend calls)
@@ -94,14 +91,21 @@ ALLOWED_ORIGINS=*
 
 ## Testing the Deployment
 
-After deployment, test the backend:
+After deployment, test the endpoints:
 
 ```bash
-curl https://your-photo-check-url.dokploy.app/healthz
+# Frontend health
+curl https://yourdomain.com/
+
+# Backend health
+curl https://yourdomain.com/healthz
 # Expected: {"status": "ok"}
 
-curl https://your-photo-check-url.dokploy.app/readyz
+curl https://yourdomain.com/readyz
 # Expected: {"status": "ready"}
+
+# Photo check endpoint
+curl -F "photo=@some_test_photo.jpg" https://yourdomain.com/photo-check
 ```
 
 ## Troubleshooting
@@ -121,23 +125,24 @@ If you see CORS errors from the frontend:
 1. Update `ALLOWED_ORIGINS` to include your frontend domain
 2. For multiple domains, separate with commas: `https://example.com,https://www.example.com`
 
-### Service Not Reachable
+### Nginx Connection Refused
 
-1. Ensure both services are on the same Docker network
-2. Check that the service name matches: `http://photo-check-backend:8000`
-3. Verify the backend service is healthy: `/readyz` endpoint
+1. Ensure the app and photo-check-backend services are healthy
+2. Check that all services are on the same Docker network
+3. Verify service names match: `app` and `photo-check-backend`
 
 ## Production Checklist
 
 - [ ] Set `ALLOWED_ORIGINS` to your actual frontend domain(s)
-- [ ] Update `VITE_PHOTO_CHECK_BACKEND_URL` to the production URL
-- [ ] Configure proper SSL certificates in Dokploy
+- [ ] Configure SSL/TLS certificates in Dokploy
 - [ ] Set up monitoring/logs
 - [ ] Configure backups
 - [ ] Test with real user photos
+- [ ] Verify all routing paths work correctly
 
 ## Notes
 
 - The backend service may take 60-90 seconds to start due to model loading
 - Dokploy's free tier may have cold-start delays
 - Consider upgrading to a paid tier for consistent performance
+- The frontend and backend now share the same domain, simplifying deployment and CORS configuration
