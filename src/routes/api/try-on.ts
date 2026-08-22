@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { generateWithVModel } from "@/lib/vmodelService.server";
 
 export const Route = createFileRoute("/api/try-on")({
   server: {
@@ -8,7 +9,25 @@ export const Route = createFileRoute("/api/try-on")({
           const body = await request.json();
           const { image, hairstyle, color, length } = body;
 
-          // ── Priority 1: Custom external backend ──────────────────────────────
+          // ── Priority 1: VModel (google/nano-banana), ported from Velura ──────
+          if (process.env.VMODEL_API_KEY) {
+            try {
+              console.log("[Local server API] Generating via VModel (google/nano-banana).");
+              const { imageUrl } = await generateWithVModel({
+                photoDataUrl: image,
+                hairstyle,
+                color,
+                length,
+              });
+              return Response.json({ success: true, jobId: "vmodel_done", resultImageUrl: imageUrl });
+            } catch (err: any) {
+              // Falls through to the next configured tier rather than failing
+              // the request outright — mirrors Velura's tiered fallback.
+              console.error("[Local server API] VModel tier failed:", err.message || err);
+            }
+          }
+
+          // ── Priority 2: Custom external backend ──────────────────────────────
           const externalApiUrl = process.env.EXTERNAL_API_URL || "";
           if (externalApiUrl) {
             console.log(`[Local server API] Forwarding to custom EXTERNAL_API_URL: ${externalApiUrl}`);
@@ -54,8 +73,8 @@ export const Route = createFileRoute("/api/try-on")({
             });
           }
 
-          // ── No external backend configured — return mock job ─────────────────
-          console.warn("[Local server API] No EXTERNAL_API_URL configured. Returning mock job.");
+          // ── No backend configured — return mock job ───────────────────────────
+          console.warn("[Local server API] No VMODEL_API_KEY or EXTERNAL_API_URL configured. Returning mock job.");
           return Response.json({ success: true, jobId: `mock_job_${hairstyle.replace(/\s+/g, "_").toLowerCase()}` });
         } catch (error: any) {
           console.error("[Local server API] catch exception:", error.message || error);
@@ -68,4 +87,3 @@ export const Route = createFileRoute("/api/try-on")({
     },
   },
 });
-

@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TryOnRouteImport } from './routes/try-on'
+import { Route as ApiPhotoCheckRouteImport } from './routes/api/photo-check'
 import { Route as ApiTryOnRouteImport } from './routes/api/try-on'
 import { Route as ApiTryOnStatusRouteImport } from './routes/api/try-on-status'
+import { Route as ApiGenerationAssetsIdRouteImport } from './routes/api/generation-assets.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const TryOnRoute = TryOnRouteImport.update({
   id: '/try-on',
   path: '/try-on',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPhotoCheckRoute = ApiPhotoCheckRouteImport.update({
+  id: '/api/photo-check',
+  path: '/api/photo-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTryOnRoute = ApiTryOnRouteImport.update({
@@ -34,39 +41,71 @@ const ApiTryOnStatusRoute = ApiTryOnStatusRouteImport.update({
   path: '/api/try-on-status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGenerationAssetsIdRoute = ApiGenerationAssetsIdRouteImport.update({
+  id: '/api/generation-assets/$id',
+  path: '/api/generation-assets/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/try-on': typeof TryOnRoute
+  '/api/photo-check': typeof ApiPhotoCheckRoute
   '/api/try-on': typeof ApiTryOnRoute
   '/api/try-on-status': typeof ApiTryOnStatusRoute
+  '/api/generation-assets/$id': typeof ApiGenerationAssetsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/try-on': typeof TryOnRoute
+  '/api/photo-check': typeof ApiPhotoCheckRoute
   '/api/try-on': typeof ApiTryOnRoute
   '/api/try-on-status': typeof ApiTryOnStatusRoute
+  '/api/generation-assets/$id': typeof ApiGenerationAssetsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/try-on': typeof TryOnRoute
+  '/api/photo-check': typeof ApiPhotoCheckRoute
   '/api/try-on': typeof ApiTryOnRoute
   '/api/try-on-status': typeof ApiTryOnStatusRoute
+  '/api/generation-assets/$id': typeof ApiGenerationAssetsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/try-on' | '/api/try-on' | '/api/try-on-status'
+  fullPaths:
+    | '/'
+    | '/try-on'
+    | '/api/photo-check'
+    | '/api/try-on'
+    | '/api/try-on-status'
+    | '/api/generation-assets/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/try-on' | '/api/try-on' | '/api/try-on-status'
-  id: '__root__' | '/' | '/try-on' | '/api/try-on' | '/api/try-on-status'
+  to:
+    | '/'
+    | '/try-on'
+    | '/api/photo-check'
+    | '/api/try-on'
+    | '/api/try-on-status'
+    | '/api/generation-assets/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/try-on'
+    | '/api/photo-check'
+    | '/api/try-on'
+    | '/api/try-on-status'
+    | '/api/generation-assets/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TryOnRoute: typeof TryOnRoute
+  ApiPhotoCheckRoute: typeof ApiPhotoCheckRoute
   ApiTryOnRoute: typeof ApiTryOnRoute
   ApiTryOnStatusRoute: typeof ApiTryOnStatusRoute
+  ApiGenerationAssetsIdRoute: typeof ApiGenerationAssetsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TryOnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/photo-check': {
+      id: '/api/photo-check'
+      path: '/api/photo-check'
+      fullPath: '/api/photo-check'
+      preLoaderRoute: typeof ApiPhotoCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/try-on': {
       id: '/api/try-on'
       path: '/api/try-on'
@@ -99,14 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTryOnStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/generation-assets/$id': {
+      id: '/api/generation-assets/$id'
+      path: '/api/generation-assets/$id'
+      fullPath: '/api/generation-assets/$id'
+      preLoaderRoute: typeof ApiGenerationAssetsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TryOnRoute: TryOnRoute,
+  ApiPhotoCheckRoute: ApiPhotoCheckRoute,
   ApiTryOnRoute: ApiTryOnRoute,
   ApiTryOnStatusRoute: ApiTryOnStatusRoute,
+  ApiGenerationAssetsIdRoute: ApiGenerationAssetsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
