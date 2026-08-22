@@ -22,8 +22,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    networks:
-      - nishhair-network
 
   photo-check-backend:
     build:
@@ -41,8 +39,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-    networks:
-      - nishhair-network
 
   nginx:
     image: nginx:alpine
@@ -56,9 +52,3 @@ services:
     depends_on:
       - app
       - photo-check-backend
-    networks:
-      - nishhair-network
-
-networks:
-  nishhair-network:
-    driver: bridge
