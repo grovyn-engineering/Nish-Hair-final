@@ -18,6 +18,7 @@ export const Route = createFileRoute("/api/try-on")({
                 hairstyle,
                 color,
                 length,
+                request,
               });
               return Response.json({ success: true, jobId: "vmodel_done", resultImageUrl: imageUrl });
             } catch (err: any) {
