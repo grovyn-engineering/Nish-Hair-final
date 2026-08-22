@@ -13,7 +13,7 @@ services:
       - NODE_ENV=production
       - VITE_EXTERNAL_API_URL=${VITE_EXTERNAL_API_URL:-}
       - EXTERNAL_API_URL=${EXTERNAL_API_URL:-}
-      - VITE_PHOTO_CHECK_BACKEND_URL=http://photo-check-backend:8000
+      - PHOTO_CHECK_BACKEND_URL=http://photo-check-backend:8000
     env_file:
       - .env
     healthcheck:

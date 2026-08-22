@@ -12,7 +12,7 @@ export interface PhotoValidationResult {
   error?: string;
 }
 
-const BACKEND_URL = import.meta.env.VITE_PHOTO_CHECK_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = "";
 
 /**
  * Validate a photo using the Velura backend API.
@@ -25,7 +25,7 @@ export async function validatePhoto(file: File): Promise<PhotoValidationResult> 
   formData.append("photo", file);
 
   try {
-    const response = await fetch(`${BACKEND_URL}/photo-check`, {
+    const response = await fetch(`/api/photo-check`, {
       method: "POST",
       body: formData,
     });
