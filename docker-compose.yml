@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -29,7 +27,7 @@ services:
   photo-check-backend:
     build:
       context: ./backend/velura-photo-check
-      dockerfile: Dockerfile
+      dockerfile: ./backend/velura-photo-check/Dockerfile
     container_name: nishhair-photo-check
     expose:
       - "8000"
