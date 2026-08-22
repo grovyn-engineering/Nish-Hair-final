@@ -21,6 +21,19 @@ dist-ssr
 .env.*.local
 .dev.vars
 
+# Backend (Dockerized separately)
+backend/
+
 # Documentation & scratch files
 README.md
 AGENTS.md
+
+# Generated assets
+.assets
+public/assets
+
+# Test files
+*.test.*
+*.spec.*
+test/
+tests/

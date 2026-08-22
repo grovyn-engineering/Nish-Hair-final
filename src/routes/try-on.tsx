@@ -18,6 +18,7 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { AIStylistCard } from "@/components/site/AIStylistCard";
 import { ErrorState } from "@/components/site/ErrorState";
 import { ConsultationModal } from "@/components/site/ConsultationModal";
+import { PhotoValidationError } from "@/components/site/PhotoValidationError";
 
 import { looks, type HairColorName, type HairLength } from "@/data/looks";
 import { getProductForLook } from "@/data/products";
@@ -54,6 +55,7 @@ function TryOnStudio() {
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [processingStage, setProcessingStage] = useState(0);
+  const [validationError, setValidationError] = useState<{ failures: string[]; reasons: string[] } | null>(null);
 
   // Action / Consultation states
   const [addedToCart, setAddedToCart] = useState(false);
@@ -91,6 +93,8 @@ function TryOnStudio() {
   }, [selectedLookId]);
 
   const handleUploadAccepted = (dataUrl: string, fileName: string, dims?: { width: number; height: number }, lowQuality?: boolean) => {
+    // Clear any previous validation errors when a new photo is uploaded
+    setValidationError(null);
     setUploadedImage(dataUrl);
     setUploadedFileName(fileName);
     setDimensions(dims);
@@ -99,6 +103,13 @@ function TryOnStudio() {
 
   const handleUploadError = (message: string) => {
     toast.error(message);
+  };
+
+  const handleValidationFailure = (failures: string[], reasons: string[]) => {
+    setValidationError({ failures, reasons });
+    toast.error("Photo validation failed", {
+      description: "Please check the errors below and try another photo.",
+    });
   };
 
   const simulateDemoMode = async () => {
@@ -335,24 +346,39 @@ function TryOnStudio() {
 
               {!uploadedImage ? (
                 <div className="space-y-4">
-                  <UploadZone onAccepted={handleUploadAccepted} onError={handleUploadError} />
+                  <UploadZone onAccepted={handleUploadAccepted} onError={handleUploadError} onValidationFailure={handleValidationFailure} enableBackendValidation={true} />
                   <p className="text-center text-xs text-muted-foreground tracking-wide">
-                    🔒 Your photo is used only to create your preview and is not stored permanently.
+                    🔒 Your photo is validated with Velura backend before use.
                   </p>
                 </div>
               ) : (
-                <ImagePreview
-                  src={uploadedImage || ""}
-                  fileName={uploadedFileName}
-                  dimensions={dimensions}
-                  isLowQuality={isLowQuality}
-                  onChange={() => {
-                    setUploadedImage(null);
-                    setDimensions(undefined);
-                    setIsLowQuality(false);
-                  }}
-                  onContinue={() => setStep(2)}
-                />
+                <div className="space-y-4">
+                  {validationError && (
+                    <PhotoValidationError
+                      failures={validationError.failures}
+                      reasons={validationError.reasons}
+                      onRetry={() => {
+                        setValidationError(null);
+                        setUploadedImage(null);
+                        setDimensions(undefined);
+                        setIsLowQuality(false);
+                      }}
+                    />
+                  )}
+                  <ImagePreview
+                    src={uploadedImage || ""}
+                    fileName={uploadedFileName}
+                    dimensions={dimensions}
+                    isLowQuality={isLowQuality}
+                    onChange={() => {
+                      setUploadedImage(null);
+                      setDimensions(undefined);
+                      setIsLowQuality(false);
+                      setValidationError(null);
+                    }}
+                    onContinue={() => setStep(2)}
+                  />
+                </div>
               )}
             </div>
           )}

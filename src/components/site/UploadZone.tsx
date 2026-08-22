@@ -1,5 +1,8 @@
 import { UploadCloud } from "lucide-react";
 import { useRef, useState, type DragEvent } from "react";
+import { toast } from "sonner";
+
+import { validatePhoto, formatValidationFailures } from "@/lib/photoValidationService";
 
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 const MAX_BYTES = 10 * 1024 * 1024;
@@ -9,13 +12,16 @@ const MIN_HEIGHT = 400;
 interface Props {
   onAccepted: (dataUrl: string, fileName: string, dimensions?: { width: number; height: number }, isLowQuality?: boolean) => void;
   onError: (message: string) => void;
+  onValidationFailure?: (failures: string[], reasons: string[]) => void;
+  enableBackendValidation?: boolean;
 }
 
-export function UploadZone({ onAccepted, onError }: Props) {
+export function UploadZone({ onAccepted, onError, onValidationFailure, enableBackendValidation = false }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+  const [validating, setValidating] = useState(false);
 
-  const handleFile = (file: File | undefined | null) => {
+  const handleFile = async (file: File | undefined | null) => {
     if (!file) {
       onError("Please choose a photo to continue.");
       return;
@@ -28,6 +34,33 @@ export function UploadZone({ onAccepted, onError }: Props) {
       onError("That photo is larger than 10MB. Please choose a smaller file.");
       return;
     }
+
+    // Backend validation (optional)
+    if (enableBackendValidation) {
+      setValidating(true);
+      try {
+        const result = await validatePhoto(file);
+        if (!result.ok) {
+          const failures = result.failures || [];
+          const reasons = result.reasons || [];
+          
+          if (onValidationFailure) {
+            onValidationFailure(failures, reasons);
+          } else {
+            onError(formatValidationFailures(failures, reasons));
+          }
+          setValidating(false);
+          return;
+        }
+      } catch (error: any) {
+        console.error("[UploadZone] Validation error:", error);
+        // Continue anyway if validation fails (e.g., backend offline)
+        onError("Warning: Could not validate photo with server. Proceeding anyway.");
+      } finally {
+        setValidating(false);
+      }
+    }
+
     const reader = new FileReader();
     reader.onerror = () => onError("We couldn't read that photo. Please try another one.");
     reader.onload = () => {
@@ -82,6 +115,8 @@ export function UploadZone({ onAccepted, onError }: Props) {
       />
       <p className="mt-6 text-xs tracking-wide text-muted-foreground">
         JPG, PNG or WEBP · Maximum 10MB · Minimum 400 × 400 px recommended
+        {enableBackendValidation && !validating && " • Validated with Velura backend"}
+        {validating && " • Validating..."}
       </p>
     </div>
   );
