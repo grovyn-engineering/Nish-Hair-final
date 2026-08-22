@@ -31,4 +31,3 @@ tddfa_lite/configs/tri.pkl
 
 # Debug/test scripts (not needed in production)
 test_cli.py
-validate_photo.py
