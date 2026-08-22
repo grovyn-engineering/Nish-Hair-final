@@ -49,6 +49,3 @@ services:
 networks:
   nishhair-net:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.250.0/24
