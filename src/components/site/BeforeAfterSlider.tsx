@@ -35,7 +35,7 @@ export function BeforeAfterSlider({ beforeSrc, afterSrc, afterLabel = "After" }:
       <img
         src={afterSrc}
         alt={`${afterLabel}: your virtual try-on preview`}
-        className="block h-[380px] w-full object-cover sm:h-[540px]"
+        className="block h-[380px] w-full object-contain sm:h-[540px]"
         draggable={false}
       />
       <div
@@ -46,7 +46,7 @@ export function BeforeAfterSlider({ beforeSrc, afterSrc, afterLabel = "After" }:
         <img
           src={beforeSrc}
           alt=""
-          className="block h-[380px] w-full object-cover sm:h-[540px]"
+          className="block h-[380px] w-full object-contain sm:h-[540px]"
           draggable={false}
         />
       </div>

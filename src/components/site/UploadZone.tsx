@@ -95,13 +95,25 @@ export function UploadZone({ onAccepted, onError, onValidationFailure, enableBac
         dragging ? "border-champagne bg-champagne-soft/40" : "border-border bg-card"
       }`}
     >
-      <UploadCloud className="mx-auto size-8 text-champagne" aria-hidden="true" />
-      <p className="mt-5 font-serif text-2xl text-espresso">Drag your photo here</p>
-      <p className="mt-2 text-sm text-muted-foreground">or browse from your device</p>
+      {!validating && (
+        <>
+          <UploadCloud className="mx-auto size-8 text-champagne" aria-hidden="true" />
+          <p className="mt-5 font-serif text-2xl text-espresso">Drag your photo here</p>
+          <p className="mt-2 text-sm text-muted-foreground">or browse from your device</p>
+        </>
+      )}
 
-      <button type="button" className="btn-base btn-primary mt-6" onClick={() => inputRef.current?.click()}>
-        Choose Photo
-      </button>
+      {!validating ? (
+        <button
+          type="button"
+          className="btn-base btn-primary mt-6"
+          onClick={() => inputRef.current?.click()}
+        >
+          Choose Photo
+        </button>
+      ) : (
+        <span> Validating Image... </span>
+      )}
       <input
         ref={inputRef}
         type="file"
@@ -115,7 +127,7 @@ export function UploadZone({ onAccepted, onError, onValidationFailure, enableBac
       />
       <p className="mt-6 text-xs tracking-wide text-muted-foreground">
         JPG, PNG or WEBP · Maximum 10MB · Minimum 400 × 400 px recommended
-        {enableBackendValidation && !validating && " • Validated with Velura backend"}
+        {enableBackendValidation && !validating && " • Validated with backend"}
         {validating && " • Validating..."}
       </p>
     </div>
