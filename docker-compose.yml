@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: nish-hair-studio
     restart: always
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       - PORT=3000
       - HOST=0.0.0.0
