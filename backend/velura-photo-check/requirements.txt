@@ -1,0 +1,11 @@
+# torch/torchvision are installed separately in the Dockerfile from
+# PyTorch's CPU-only wheel index -- do NOT add them back here with a plain
+# `pip install`, that resolves to the multi-GB CUDA build and blows past
+# Render's build memory limit even though this app never touches a GPU.
+numpy
+opencv-python
+pyyaml
+mediapipe==0.10.14   # pinned: 0.10.32+ removed the mp.solutions API test_cli.py (and validate_photo.py) depend on
+fastapi
+uvicorn[standard]
+python-multipart      # required by FastAPI for handling the multipart photo upload
