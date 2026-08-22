@@ -47,7 +47,7 @@ function TryOnStudio() {
   // Initialize selectedLookId from search params or default to first look
   const [selectedLookId, setSelectedLookId] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<HairColorName>("Brunette");
-  const [selectedLength, setSelectedLength] = useState<HairLength>("22\"");
+  const [selectedLength, setSelectedLength] = useState<HairLength>("12\"");
 
   const [generationStatus, setGenerationStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -242,28 +242,20 @@ function TryOnStudio() {
 
   const handleApplyStylistPick = () => {
     let recommendedColor: HairColorName = "Brunette";
-    let recommendedLength: HairLength = "22\"";
+    let recommendedLength: HairLength = "14\"";
 
     switch (selectedLook.id) {
-      case "beach-waves":
-        recommendedColor = "Brunette";
-        recommendedLength = "22\"";
-        break;
-      case "long-straight":
+      case "curtain-bangs":
         recommendedColor = "Black";
-        recommendedLength = "22\"";
+        recommendedLength = "12\"";
         break;
-      case "curly":
+      case "scalp-topper":
+        recommendedColor = "Brunette";
+        recommendedLength = "14\"";
+        break;
+      case "electric-blue-strand":
         recommendedColor = "Blonde";
-        recommendedLength = "22\"";
-        break;
-      case "bob":
-        recommendedColor = "Brunette";
-        recommendedLength = "18\"";
-        break;
-      case "layered":
-        recommendedColor = "Brunette";
-        recommendedLength = "22\"";
+        recommendedLength = "16\"";
         break;
     }
 

@@ -7,11 +7,9 @@ const corsHeaders = {
 };
 
 const ALLOWED_HAIRSTYLES = [
-  "Beach Waves",
-  "Long Straight",
-  "Curly",
-  "Bob",
-  "Layered"
+  "Clip-in Hairline with Curtain Bangs",
+  "Bangs With Scalp Hair Topper",
+  "Electric Blue Hair Strand"
 ];
 
 const ALLOWED_COLORS = [
@@ -21,15 +19,13 @@ const ALLOWED_COLORS = [
 ];
 
 const ALLOWED_LENGTHS = [
-  "18", "22", "26", "18\"", "22\"", "26\""
+  "12", "14", "16", "12\"", "14\"", "16\""
 ];
 
 const HAIRSTYLE_PROVIDER_MAP: Record<string, string> = {
-  "Beach Waves": "LongWavy",
-  "Long Straight": "LongStraight",
-  "Curly": "LongCurly",
-  "Bob": "BobCut",
-  "Layered": "WavyShag",
+  "Clip-in Hairline with Curtain Bangs": "CurtainBangs",
+  "Bangs With Scalp Hair Topper": "HairTopper",
+  "Electric Blue Hair Strand": "ColorStrand",
 };
 
 const COLOR_PROVIDER_MAP: Record<string, string> = {

@@ -21,14 +21,12 @@ export function LookCard({ look, selected = false, ctaLabel = "Try Look", onSele
           <Check className="size-3" aria-hidden="true" /> Selected
         </span>
       )}
-      <div className="overflow-hidden">
+      <div className="flex items-center justify-center overflow-hidden bg-[#f5f0eb]" style={{ height: "240px" }}>
         <img
           src={look.image}
           alt={`${look.name} — ${look.description}`}
-          width={800}
-          height={1000}
           loading="lazy"
-          className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:h-72"
+          className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.04]"
         />
       </div>
       <div className="flex flex-1 flex-col p-6">
