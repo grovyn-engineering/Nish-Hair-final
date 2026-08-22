@@ -8,9 +8,55 @@ export const Route = createFileRoute("/api/try-on")({
           const body = await request.json();
           const { image, hairstyle, color, length } = body;
 
-          // 1. Secret API Key check (with mock fallback)
+          // ── Priority 1: Custom external backend ──────────────────────────────
+          const externalApiUrl = process.env.EXTERNAL_API_URL || "";
+          if (externalApiUrl) {
+            console.log(`[Local server API] Forwarding to custom EXTERNAL_API_URL: ${externalApiUrl}`);
+            const extResponse = await fetch(externalApiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image, hairstyle, color, length }),
+            });
+
+            if (!extResponse.ok) {
+              const errText = await extResponse.text().catch(() => "");
+              console.error(`[Local server API] External backend responded ${extResponse.status}:`, errText.slice(0, 300));
+              return Response.json(
+                { success: false, error: `External backend error (${extResponse.status}). Please try again.` },
+                { status: extResponse.status }
+              );
+            }
+
+            const extJson = await extResponse.json();
+
+            // Accept either a URL or a base64 image in the response
+            const resultImageUrl: string | undefined =
+              extJson.resultImageUrl ??
+              extJson.result_image_url ??
+              extJson.imageUrl ??
+              extJson.url ??
+              extJson.image ??   // base64 data URL also works
+              undefined;
+
+            if (!resultImageUrl) {
+              console.error("[Local server API] External backend returned no image field:", JSON.stringify(extJson).slice(0, 300));
+              return Response.json(
+                { success: false, error: "External backend returned an unrecognised response format." },
+                { status: 502 }
+              );
+            }
+
+            // Return as an already-completed job so the frontend skips polling
+            return Response.json({
+              success: true,
+              jobId: "ext_done",
+              resultImageUrl,
+            });
+          }
+
+          // ── Priority 2: TryItOn API key ──────────────────────────────────────
           const apiKey = process.env.TRYITON_API_KEY || "";
-          
+
           if (!apiKey || apiKey === "mock" || apiKey === "demo") {
             console.warn("[Local server API] TRYITON_API_KEY is not configured or set to mock. Returning mock job.");
             return Response.json({ success: true, jobId: `mock_job_${hairstyle.replace(/\s+/g, "_").toLowerCase()}` });
@@ -52,7 +98,7 @@ export const Route = createFileRoute("/api/try-on")({
           if (!response.ok) {
             const errText = await response.text().catch(() => "");
             console.error(`[Local server API] TryItOn failed with status ${response.status}:`, errText.slice(0, 300));
-            
+
             if (response.status === 403 || response.status === 401 || response.status === 402) {
               console.warn("[Local server API] Auth/credits failure. Falling back to mock job.");
               return Response.json({ success: true, jobId: `mock_job_${hairstyle.replace(/\s+/g, "_").toLowerCase()}` });
@@ -67,7 +113,7 @@ export const Route = createFileRoute("/api/try-on")({
           const resJson = await response.json();
           return Response.json({
             success: true,
-            jobId: resJson.jobId || resJson.job_id
+            jobId: resJson.jobId || resJson.job_id,
           });
         } catch (error: any) {
           console.error("[Local server API] catch exception:", error.message || error);
@@ -76,7 +122,8 @@ export const Route = createFileRoute("/api/try-on")({
             { status: 500 }
           );
         }
-      }
-    }
-  }
+      },
+    },
+  },
 });
+

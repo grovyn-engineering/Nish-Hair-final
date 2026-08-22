@@ -3,9 +3,11 @@ import { useRef, useState, type DragEvent } from "react";
 
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 const MAX_BYTES = 10 * 1024 * 1024;
+const MIN_WIDTH = 400;
+const MIN_HEIGHT = 400;
 
 interface Props {
-  onAccepted: (dataUrl: string, fileName: string, dimensions?: { width: number; height: number }) => void;
+  onAccepted: (dataUrl: string, fileName: string, dimensions?: { width: number; height: number }, isLowQuality?: boolean) => void;
   onError: (message: string) => void;
 }
 
@@ -32,7 +34,11 @@ export function UploadZone({ onAccepted, onError }: Props) {
       const dataUrl = String(reader.result);
       const img = new Image();
       img.onerror = () => onError("That image appears to be damaged. Please try another photo.");
-      img.onload = () => onAccepted(dataUrl, file.name, { width: img.width, height: img.height });
+      img.onload = () => {
+        const dims = { width: img.width, height: img.height };
+        const isLowQuality = img.width < MIN_WIDTH || img.height < MIN_HEIGHT;
+        onAccepted(dataUrl, file.name, dims, isLowQuality);
+      };
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
@@ -75,7 +81,7 @@ export function UploadZone({ onAccepted, onError }: Props) {
         }}
       />
       <p className="mt-6 text-xs tracking-wide text-muted-foreground">
-        JPG, PNG or WEBP · Maximum 10MB
+        JPG, PNG or WEBP · Maximum 10MB · Minimum 400 × 400 px recommended
       </p>
     </div>
   );

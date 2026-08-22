@@ -41,6 +41,7 @@ function TryOnStudio() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [uploadedFileName, setUploadedFileName] = useState<string | undefined>(undefined);
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | undefined>(undefined);
+  const [isLowQuality, setIsLowQuality] = useState(false);
 
   // Initialize selectedLookId from search params or default to first look
   const [selectedLookId, setSelectedLookId] = useState<string | null>(null);
@@ -89,10 +90,11 @@ function TryOnStudio() {
     setRequestedConsultation(false);
   }, [selectedLookId]);
 
-  const handleUploadAccepted = (dataUrl: string, fileName: string, dims?: { width: number; height: number }) => {
+  const handleUploadAccepted = (dataUrl: string, fileName: string, dims?: { width: number; height: number }, lowQuality?: boolean) => {
     setUploadedImage(dataUrl);
     setUploadedFileName(fileName);
     setDimensions(dims);
+    setIsLowQuality(lowQuality ?? false);
   };
 
   const handleUploadError = (message: string) => {
@@ -164,6 +166,16 @@ function TryOnStudio() {
         return;
       }
 
+      // ── Fast path: external backend returned image immediately ──────────────
+      if (submitRes.resultImageUrl) {
+        setProcessingStage(3);
+        await new Promise((resolve) => setTimeout(resolve, 800)); // brief UX pause
+        setGeneratedImage(submitRes.resultImageUrl);
+        setIsSample(false);
+        setGenerationStatus("success");
+        return;
+      }
+
       const jobId = submitRes.jobId;
       setProcessingStage(1); // Stage 1: Understanding your hair profile
 
@@ -215,6 +227,7 @@ function TryOnStudio() {
       setErrorMsg("We couldn't create your preview right now. Please try again.");
     }
   };
+
 
   const handleApplyStylistPick = () => {
     let recommendedColor: HairColorName = "Brunette";
@@ -332,9 +345,11 @@ function TryOnStudio() {
                   src={uploadedImage || ""}
                   fileName={uploadedFileName}
                   dimensions={dimensions}
+                  isLowQuality={isLowQuality}
                   onChange={() => {
                     setUploadedImage(null);
                     setDimensions(undefined);
+                    setIsLowQuality(false);
                   }}
                   onContinue={() => setStep(2)}
                 />
