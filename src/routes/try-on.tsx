@@ -315,7 +315,7 @@ function TryOnStudio() {
   const product = getProductForLook(selectedLook.id);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[var(--nh-paper)]">
       <Navbar />
       <main className="mx-auto max-w-7xl px-5 py-10 sm:px-8">
         {/* Header and Progress Steps */}

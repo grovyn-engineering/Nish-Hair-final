@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportAppError } from "../lib/error-reporting";
+import { SiteStateProvider } from "../lib/site-state";
+import { GlobalOverlays } from "@/components/site/GlobalOverlays";
 
 function NotFoundComponent() {
   return (
@@ -77,11 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "NishHair Try-On Studio — See Your Next Look Before You Buy" },
-      { name: "description", content: "Upload a photo, explore personalized hairstyles, lengths and colors, and preview your next look before making a purchase." },
+      { title: "NishHair — Instant Hair, Real Confidence | Try-On Studio" },
+      { name: "description", content: "India's pioneer in luxury 100% human hair toppers, clip-in extensions, and clip-in bangs. Preview your next look with the NishHair AI Try-On Studio before you buy." },
       { name: "author", content: "NishHair" },
-      { property: "og:title", content: "NishHair Try-On Studio" },
-      { property: "og:description", content: "Upload a photo, explore personalized hairstyles, lengths and colors, and preview your next look before making a purchase." },
+      { property: "og:title", content: "NishHair — Instant Hair, Real Confidence" },
+      { property: "og:description", content: "Preview your next look with the NishHair AI Try-On Studio before you buy." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@NishHair" },
@@ -125,9 +127,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <Toaster />
+      <SiteStateProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <GlobalOverlays />
+        <Toaster />
+      </SiteStateProvider>
     </QueryClientProvider>
   );
 }

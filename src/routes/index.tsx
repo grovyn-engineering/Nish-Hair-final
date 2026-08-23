@@ -1,17 +1,36 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { z } from "zod";
+
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Hero } from "@/components/site/Hero";
-import { HowItWorks } from "@/components/site/HowItWorks";
-import { LookGrid } from "@/components/site/LookGrid";
-import { looks } from "@/data/looks";
+import { TrustStrip } from "@/components/site/TrustStrip";
+import { CategoryNav } from "@/components/site/CategoryNav";
+import { TryOnTeaser } from "@/components/site/TryOnTeaser";
+import { Transformations } from "@/components/site/Transformations";
+import { HairQuizWidget } from "@/components/site/HairQuizWidget";
+import { ShopByGoal } from "@/components/site/ShopByGoal";
+import { CuratedProducts } from "@/components/site/CuratedProducts";
+import { WhyNishHair } from "@/components/site/WhyNishHair";
+import { HairMomentStrip } from "@/components/site/HairMomentStrip";
+import { CelebrityEndorsements } from "@/components/site/CelebrityEndorsements";
+import { CustomerSpotlight } from "@/components/site/CustomerSpotlight";
+import { StoreLocator } from "@/components/site/StoreLocator";
+import { HairJournal } from "@/components/site/HairJournal";
+import { FinalConversion } from "@/components/site/FinalConversion";
+import { useSiteState } from "@/lib/site-state";
 
-const title = "NishHair — Confidence before purchase,not guesswork";
+const title = "NishHair — Instant Hair, Real Confidence";
 const description =
-  "Upload a photo and preview personalized hairstyles, lengths and colors with NishHair's AI-powered virtual try-on.";
+  "India's pioneer in luxury 100% human hair toppers, clip-in extensions, and clip-in bangs. Preview your next look with the NishHair AI Try-On Studio before you buy.";
+
+const searchSchema = z.object({
+  category: z.string().optional(),
+});
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search) => searchSchema.parse(search),
   head: () => ({
     meta: [
       { title },
@@ -24,50 +43,35 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const navigate = useNavigate();
+  const { category } = Route.useSearch();
+  const { setSelectedCategory } = useSiteState();
+
+  // Sync ?category= from a Header/Footer link (or a direct shared link) into
+  // shared site state so CuratedProducts opens pre-filtered.
+  useEffect(() => {
+    if (category) setSelectedCategory(category);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[var(--nh-paper)]">
       <Navbar />
       <main>
         <Hero />
-        <HowItWorks />
-
-        <section id="looks" className="mx-auto max-w-7xl px-5 py-16 sm:px-8" aria-labelledby="looks-title">
-          <p className="eyebrow">Featured looks</p>
-          <h2 id="looks-title" className="mt-3 font-serif text-3xl text-espresso sm:text-4xl">
-            Explore Your Next Look
-          </h2>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-            From effortless waves to polished lengths, discover styles designed to fit your mood.
-          </p>
-          <div className="mt-10">
-            <LookGrid
-              looks={looks}
-              onSelect={(look) => navigate({ to: "/try-on", search: { look: look.id } })}
-            />
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="rounded-[1.75rem] bg-sand px-6 py-14 text-center sm:px-12 sm:py-20">
-            <h2 className="mx-auto max-w-2xl font-serif text-3xl text-espresso sm:text-4xl">
-              Confidence before purchase, not guesswork
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Our AI preview exists for one reason: so you know how a NishHair piece will look on
-              you before it arrives at your door.
-            </p>
-            <button
-              type="button"
-              onClick={() => navigate({ to: "/try-on" })}
-              className="btn-base btn-primary mt-8"
-            >
-              Try Your Look
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </button>
-          </div>
-        </section>
+        <TrustStrip />
+        <CategoryNav />
+        <TryOnTeaser />
+        <Transformations />
+        <HairQuizWidget />
+        <ShopByGoal />
+        <CuratedProducts />
+        <WhyNishHair />
+        <HairMomentStrip />
+        <CelebrityEndorsements />
+        <CustomerSpotlight />
+        <StoreLocator />
+        <HairJournal />
+        <FinalConversion />
       </main>
       <Footer />
     </div>

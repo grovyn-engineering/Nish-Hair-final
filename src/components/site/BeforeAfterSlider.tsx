@@ -5,9 +5,30 @@ interface Props {
   beforeSrc: string;
   afterSrc: string;
   afterLabel?: string;
+  beforeLabel?: string;
+  /**
+   * Visual classes (border, radius, background, aspect ratio) for the outer
+   * container, replacing the default. Defaults to the original try-on preview
+   * styling so existing callers (src/routes/try-on.tsx) render pixel-identical
+   * output.
+   */
+  className?: string;
+  /**
+   * Classes applied to both the before and after <img> elements, replacing the
+   * default sizing. Defaults to the original try-on preview sizing so existing
+   * callers (src/routes/try-on.tsx) render pixel-identical output.
+   */
+  imgClassName?: string;
 }
 
-export function BeforeAfterSlider({ beforeSrc, afterSrc, afterLabel = "After" }: Props) {
+export function BeforeAfterSlider({
+  beforeSrc,
+  afterSrc,
+  afterLabel = "After",
+  beforeLabel = "Before",
+  className = "rounded-2xl border border-border bg-sand",
+  imgClassName = "block h-[380px] w-full object-contain sm:h-[540px]",
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(50);
   const dragging = useRef(false);
@@ -22,7 +43,7 @@ export function BeforeAfterSlider({ beforeSrc, afterSrc, afterLabel = "After" }:
   return (
     <div
       ref={containerRef}
-      className="relative w-full touch-none overflow-hidden rounded-2xl border border-border bg-sand select-none"
+      className={`relative w-full touch-none overflow-hidden select-none ${className}`.trim()}
       onPointerDown={(e) => {
         dragging.current = true;
         (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
@@ -35,7 +56,7 @@ export function BeforeAfterSlider({ beforeSrc, afterSrc, afterLabel = "After" }:
       <img
         src={afterSrc}
         alt={`${afterLabel}: your virtual try-on preview`}
-        className="block h-[380px] w-full object-contain sm:h-[540px]"
+        className={imgClassName}
         draggable={false}
       />
       <div
@@ -43,16 +64,11 @@ export function BeforeAfterSlider({ beforeSrc, afterSrc, afterLabel = "After" }:
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         aria-hidden="true"
       >
-        <img
-          src={beforeSrc}
-          alt=""
-          className="block h-[380px] w-full object-contain sm:h-[540px]"
-          draggable={false}
-        />
+        <img src={beforeSrc} alt="" className={imgClassName} draggable={false} />
       </div>
 
       <span className="pointer-events-none absolute top-4 left-4 rounded-full bg-background/85 px-3 py-1 text-xs font-semibold tracking-wider text-espresso">
-        BEFORE
+        {beforeLabel.toUpperCase()}
       </span>
       <span className="pointer-events-none absolute top-4 right-4 rounded-full bg-espresso/90 px-3 py-1 text-xs font-semibold tracking-wider text-primary-foreground">
         {String(afterLabel).toUpperCase()}
