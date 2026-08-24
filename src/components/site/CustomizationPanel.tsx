@@ -89,7 +89,7 @@ export function CustomizationPanel({
       </p>
 
       {/* Demo Mode Toggle */}
-      <div className="mt-6 flex items-center gap-3 rounded-xl border border-champagne-soft bg-champagne-soft/10 p-3">
+      {/* <div className="mt-6 flex items-center gap-3 rounded-xl border border-champagne-soft bg-champagne-soft/10 p-3">
         <input
           type="checkbox"
           id="demo-mode"
@@ -101,7 +101,7 @@ export function CustomizationPanel({
         <label htmlFor="demo-mode" className="text-sm font-medium text-espresso cursor-pointer select-none">
           Demo Mode (Instant simulation, no API key required)
         </label>
-      </div>
+      </div> */}
 
       {/* Explanatory Box: What am I selecting? What happens next? */}
       <div className="mt-6 rounded-xl border border-border bg-sand/30 p-4 text-xs text-muted-foreground space-y-3">
