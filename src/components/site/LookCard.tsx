@@ -24,7 +24,7 @@ export function LookCard({ look, selected = false, ctaLabel = "Try Look", onSele
       <div className="flex items-center justify-center overflow-hidden bg-[#f5f0eb]" style={{ height: "240px" }}>
         <img
           src={look.image}
-          alt={`${look.name} — ${look.description}`}
+          alt={`${look.name} - ${look.description}`}
           loading="lazy"
           className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.04]"
         />

@@ -165,7 +165,7 @@ export function Hero() {
                     onClick={openFounderStory}
                     className="text-[10px] font-semibold uppercase tracking-wider text-[var(--nh-chestnut)] hover:text-[var(--nh-gold)] transition-colors text-left cursor-pointer mt-1.5 block"
                   >
-                    Parul Gulati, Founder — Read her story &rarr;
+                    Parul Gulati, Founder - Read her story &rarr;
                   </button>
                 </div>
               </div>

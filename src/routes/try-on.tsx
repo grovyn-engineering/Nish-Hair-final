@@ -297,7 +297,7 @@ function TryOnStudio() {
 
   const handleConsultationSuccess = () => {
     setRequestedConsultation(true);
-    toast.success("Thank you — our stylist team will be in touch.");
+    toast.success("Thank you - our stylist team will be in touch.");
   };
 
   const handleResetToLookChoice = () => {

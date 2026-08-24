@@ -75,7 +75,7 @@ export const looks: Look[] = [
     availableColors: ["Electric Blue"],
     availableLengths: ['12"'],
     stylistNote:
-      "Electric Blue strands pop beautifully against dark hair — try a single strand for a subtle peek or layer multiples for full impact.",
+      "Electric Blue strands pop beautifully against dark hair - try a single strand for a subtle peek or layer multiples for full impact.",
   },
 ];
 

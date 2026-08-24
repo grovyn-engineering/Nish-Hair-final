@@ -13,23 +13,23 @@ export function CelebrityEndorsements() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="space-y-2">
             <span className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-[var(--nh-gold)] block">
-              Red Carpet Endorsements
+              Press & Partnerships
             </span>
             <h2 className="nh-serif font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight">
-              Loved by Creators, Icons & Judges
+              As Seen On Shark Tank India
             </h2>
           </div>
           <div className="flex items-center gap-3 bg-white/10 px-5 py-3 border border-white/15">
             <Award className="w-6 h-6 text-[var(--nh-gold)]" />
             <div>
               <div className="text-xs font-extrabold uppercase text-white">Shark Tank India Season 2</div>
-              <div className="text-[11px] text-white/60">Featured Pitch & Unanimous Praise</div>
+              <div className="text-[11px] text-white/60">National Television Feature</div>
             </div>
           </div>
         </div>
 
-        {/* 4 Cards Grid with Part 3D Depth Stack */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Verified press & partnership cards, sourced directly from nishhair.com */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {CELEBRITY_REVIEWS.map((celeb) => (
             <div
               key={celeb.id}
@@ -67,7 +67,7 @@ export function CelebrityEndorsements() {
 
               {/* Loved Product Footer */}
               <div className="pt-4 mt-4 border-t border-[var(--nh-ink)]/10 flex items-center justify-between text-xs">
-                <span className="text-[10px] uppercase font-bold text-[var(--nh-ink)]/50">Favorite Piece:</span>
+                <span className="text-[10px] uppercase font-bold text-[var(--nh-ink)]/50">Highlight:</span>
                 <span className="font-bold text-[var(--nh-ink)] text-[11px]">{celeb.productLoved}</span>
               </div>
             </div>

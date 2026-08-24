@@ -84,7 +84,7 @@ export function Transformations() {
             <div className="p-4 bg-white border border-[var(--nh-ink)]/10 space-y-2">
               <Quote className="w-5 h-5 text-[var(--nh-gold)]" />
               <p className="text-xs italic text-[var(--nh-ink)]/80 leading-relaxed nh-serif">"{activeCase.customerQuote}"</p>
-              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[var(--nh-ink)]">— {activeCase.customerName}</div>
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[var(--nh-ink)]">{activeCase.customerName}</div>
             </div>
             <button
               onClick={() => setSelectedCategory("all")}

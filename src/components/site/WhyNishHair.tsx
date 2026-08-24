@@ -10,7 +10,7 @@ const PILLARS = [
   {
     num: '02',
     title: 'Scalp-Mimicking Breathable Silk Bases',
-    description: 'Our toppers use ultra-fine triple-layered silk bases that replicate real scalp skin pores. Part it anywhere—left, middle, or zigzag—with complete invisibility.'
+    description: 'Our toppers use ultra-fine triple-layered silk bases that replicate real scalp skin pores. Part it anywhere: left, middle, or zigzag, with complete invisibility.'
   },
   {
     num: '03',
@@ -92,7 +92,7 @@ export function WhyNishHair() {
               <div className="relative z-10 space-y-6">
                 <div className="aspect-[4/5] overflow-hidden border border-[var(--nh-ink)]/20 shadow-md bg-[var(--nh-bone)]">
                   <img
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
+                    src="https://www.nishhair.com/cdn/shop/files/WhatsApp_Image_2024-02-13_at_5.56.13_PM_690x902_crop_center.jpg?v=1707827632"
                     alt="Parul Gulati with Nish Hair"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"

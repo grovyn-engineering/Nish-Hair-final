@@ -43,7 +43,7 @@ export function FounderStoryModal({ isOpen, onClose }: FounderStoryModalProps) {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             <div className="md:col-span-5 aspect-[4/5] border-2 border-[var(--nh-ink)] overflow-hidden bg-[var(--nh-bone)] shadow-xl">
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
+                src="https://www.nishhair.com/cdn/shop/files/WhatsApp_Image_2024-02-13_at_5.56.13_PM_690x902_crop_center.jpg?v=1707827632"
                 alt="Parul Gulati Founder of Nish Hair"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -66,6 +66,23 @@ export function FounderStoryModal({ isOpen, onClose }: FounderStoryModalProps) {
             </div>
           </div>
 
+          {/* Watch Her Story (real Instagram reel from @nishhair) */}
+          <div className="space-y-4 pt-2">
+            <h4 className="nh-serif font-black text-2xl text-[var(--nh-ink)]">
+              Watch Parul Tell It Herself
+            </h4>
+            <div className="flex justify-center">
+              <iframe
+                src="https://www.instagram.com/p/Dbmzf_9opvB/embed"
+                title="Parul Gulati on Instagram"
+                width="360"
+                height="480"
+                loading="lazy"
+                className="max-w-full border-2 border-[var(--nh-ink)] shadow-md"
+              />
+            </div>
+          </div>
+
           {/* Timeline Milestones */}
           <div className="space-y-6 pt-4 border-t border-[var(--nh-ink)]/10">
             <h4 className="nh-serif font-black text-2xl text-[var(--nh-ink)]">
@@ -85,7 +102,7 @@ export function FounderStoryModal({ isOpen, onClose }: FounderStoryModalProps) {
                 <div className="nh-serif font-black text-2xl text-[var(--nh-chestnut)]">2023</div>
                 <h5 className="font-bold text-sm text-[var(--nh-ink)]">Shark Tank Viral Pitch</h5>
                 <p className="text-xs text-[var(--nh-ink)]/70 leading-relaxed">
-                  Stepped onto national television as a 100% solo founder, showcasing massive profitability and emotional consumer trust.
+                  Pitched solo on national television and secured an investment deal, calling it one of the top 3 moments of her life.
                 </p>
               </div>
 
@@ -109,7 +126,7 @@ export function FounderStoryModal({ isOpen, onClose }: FounderStoryModalProps) {
               Every single piece leaving our atelier is touched by human hands, ethically sourced, and tested for pure human hair authenticity. If a product does not meet the standards I would wear myself on camera, it never goes into a box.
             </p>
             <div className="pt-2 flex items-center justify-between">
-              <span className="nh-serif italic font-bold text-lg text-[var(--nh-gold)]">— Parul Gulati</span>
+              <span className="nh-serif italic font-bold text-lg text-[var(--nh-gold)]">Parul Gulati</span>
               <button
                 onClick={onClose}
                 className="px-5 py-2.5 bg-[var(--nh-gold)] text-[var(--nh-ink)] text-xs font-extrabold uppercase tracking-wider hover:bg-white transition-colors cursor-pointer"

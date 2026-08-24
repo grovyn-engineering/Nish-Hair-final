@@ -16,12 +16,11 @@ import { WhyNishHair } from "@/components/site/WhyNishHair";
 import { HairMomentStrip } from "@/components/site/HairMomentStrip";
 import { CelebrityEndorsements } from "@/components/site/CelebrityEndorsements";
 import { CustomerSpotlight } from "@/components/site/CustomerSpotlight";
-import { StoreLocator } from "@/components/site/StoreLocator";
 import { HairJournal } from "@/components/site/HairJournal";
 import { FinalConversion } from "@/components/site/FinalConversion";
 import { useSiteState } from "@/lib/site-state";
 
-const title = "NishHair — Instant Hair, Real Confidence";
+const title = "NishHair - Instant Hair, Real Confidence";
 const description =
   "India's pioneer in luxury 100% human hair toppers, clip-in extensions, and clip-in bangs. Preview your next look with the NishHair AI Try-On Studio before you buy.";
 
@@ -69,7 +68,6 @@ function Index() {
         <HairMomentStrip />
         <CelebrityEndorsements />
         <CustomerSpotlight />
-        <StoreLocator />
         <HairJournal />
         <FinalConversion />
       </main>
