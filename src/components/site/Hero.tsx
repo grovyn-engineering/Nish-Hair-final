@@ -61,7 +61,7 @@ export function Hero() {
     if (cardRef.current) cardRef.current.style.transform = "perspective(800px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)";
   };
 
-  const btn1Ref = useRef<HTMLAnchorElement>(null);
+  const btn1Ref = useRef<HTMLButtonElement>(null);
   const handleBtn1Move = (e: React.MouseEvent) => {
     if (!btn1Ref.current || shouldReduceMotion) return;
     const rect = btn1Ref.current.getBoundingClientRect();
@@ -69,7 +69,7 @@ export function Hero() {
   };
   const handleBtn1Leave = () => { if (btn1Ref.current) btn1Ref.current.style.transform = "translate(0, 0)"; };
 
-  const btn2Ref = useRef<HTMLButtonElement>(null);
+  const btn2Ref = useRef<HTMLAnchorElement>(null);
   const handleBtn2Move = (e: React.MouseEvent) => {
     if (!btn2Ref.current || shouldReduceMotion) return;
     const rect = btn2Ref.current.getBoundingClientRect();
@@ -130,26 +130,26 @@ export function Hero() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-3">
-              <a
+              <button
                 ref={btn1Ref}
                 onMouseMove={handleBtn1Move}
                 onMouseLeave={handleBtn1Leave}
-                href="#shop-curated-section"
+                onClick={goToTryOn}
                 className="nh-btn-primary nh-magnetic group inline-flex items-center justify-center gap-3 px-8 py-4 text-[11px] font-bold uppercase tracking-[0.2em] shadow-md text-center cursor-pointer"
               >
-                <span>Shop Collection</span>
+                <span>Launch 3D Try-On Studio</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </button>
 
-              <button
+              <a
                 ref={btn2Ref}
                 onMouseMove={handleBtn2Move}
                 onMouseLeave={handleBtn2Leave}
-                onClick={goToTryOn}
+                href="#shop-curated-section"
                 className="nh-btn-secondary nh-magnetic inline-flex items-center justify-center gap-2 px-8 py-4 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[var(--nh-bone)] text-center cursor-pointer"
               >
-                <span>Launch 3D Try-On Studio</span>
-              </button>
+                <span>Shop Collection</span>
+              </a>
             </div>
 
             <div className="pt-4 border-t border-[var(--nh-ink)]/10">
@@ -212,7 +212,7 @@ export function Hero() {
                 <h3 className="nh-serif font-bold text-2xl leading-tight">{activeLook.headline}</h3>
                 <p className="text-[13px] text-white/80 leading-snug line-clamp-2">{activeLook.sub}</p>
                 <div className="pt-2 flex items-center justify-between">
-                  <span className="text-[11px] text-white/60 font-mono">100% Indian Temple Virgin Hair</span>
+                  {/* <span className="text-[11px] text-white/60 font-mono">100% Indian Temple Virgin Hair</span> */}
                   <button
                     onClick={() => {
                       const product = PRODUCTS.find((p) => p.id === activeLook.productId);

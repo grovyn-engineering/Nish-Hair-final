@@ -2,8 +2,9 @@
 // useSiteState().goToTryOn() to route into the real /try-on flow instead of
 // opening a local fake simulator modal.
 
+import videoSrc from "@/assets/video.mp4";
 import { useState } from "react";
-import { Camera, ArrowRight, Layers, Sliders, CheckCircle, RefreshCw } from "lucide-react";
+import { Camera, ArrowRight, Layers, Sliders, CheckCircle } from "lucide-react";
 import { useSiteState } from "@/lib/site-state";
 
 const PREVIEW_STYLES = [
@@ -36,7 +37,6 @@ const PREVIEW_STYLES = [
 export function TryOnTeaser() {
   const { goToTryOn } = useSiteState();
   const [activeStyleIdx, setActiveStyleIdx] = useState(0);
-  const [showAfter, setShowAfter] = useState(true);
   const activeStyle = PREVIEW_STYLES[activeStyleIdx];
 
   return (
@@ -101,10 +101,17 @@ export function TryOnTeaser() {
               </div>
 
               <div className="relative aspect-[4/4.5] overflow-hidden border border-white/10 bg-black/40">
-                <img src={showAfter ? activeStyle.after : activeStyle.before} alt={activeStyle.name} className="w-full h-full object-cover object-center transition-all duration-300" referrerPolicy="no-referrer" />
+                <video
+                  src={videoSrc}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover object-center"
+                />
                 <div className="absolute top-3 left-3">
-                  <span className={`px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider ${showAfter ? "bg-[var(--nh-gold)] text-[var(--nh-ink)]" : "bg-white/20 backdrop-blur-md text-white"}`}>
-                    {showAfter ? "WITH NISH HAIR PIECE" : "NATURAL HAIR (BEFORE)"}
+                  <span className="px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider bg-[var(--nh-gold)] text-[var(--nh-ink)]">
+                    LIVE PREVIEW
                   </span>
                 </div>
                 <div className="absolute bottom-3 right-3 left-3 flex justify-between items-center bg-black/70 backdrop-blur-md p-2.5 border border-white/10">
@@ -112,13 +119,6 @@ export function TryOnTeaser() {
                     <div className="text-[11px] font-bold text-white uppercase">{activeStyle.name}</div>
                     <div className="text-[10px] text-white/60">Shade: {activeStyle.shade}</div>
                   </div>
-                  <button
-                    onClick={() => setShowAfter(!showAfter)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-[var(--nh-ink)] text-[10px] font-extrabold uppercase tracking-wider hover:bg-[var(--nh-gold)] transition-colors cursor-pointer"
-                  >
-                    <RefreshCw className="w-3 h-3" />
-                    <span>{showAfter ? "Show Before" : "Show After"}</span>
-                  </button>
                 </div>
               </div>
 
