@@ -137,7 +137,7 @@ export function Hero() {
                 onClick={goToTryOn}
                 className="nh-btn-primary nh-magnetic group inline-flex items-center justify-center gap-3 px-8 py-4 text-[11px] font-bold uppercase tracking-[0.2em] shadow-md text-center cursor-pointer"
               >
-                <span>Launch 3D Try-On Studio</span>
+                <span>Launch AI Try-On Studio</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
